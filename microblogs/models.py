@@ -12,24 +12,7 @@ class User(AbstractUser):
             message='Username does not meet required format. (@ followed by at least 3 characters)',
         )],
     )
-
-    first_name = models.CharField(
-        blank=False,
-        max_length=50,
-    )
-
-    last_name = models.CharField(
-        blank=False,
-        max_length=50,
-    )
-
-    email = models.EmailField(
-        unique=True,
-        blank=False,
-    )
-
-    bio = models.CharField(
-        unique=False,
-        blank=True,
-        max_length=520,
-    )
+    first_name = models.CharField(blank=False, max_length=50)
+    last_name = models.CharField(blank=False, max_length=50)
+    email = models.EmailField(unique=True, blank=False)
+    bio = models.CharField(unique=False, blank=True, max_length=520)
