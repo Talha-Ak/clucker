@@ -16,3 +16,8 @@ class User(AbstractUser):
     last_name = models.CharField(blank=False, max_length=50)
     email = models.EmailField(unique=True, blank=False)
     bio = models.CharField(unique=False, blank=True, max_length=520)
+
+class Post(models.Model):
+    author = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=False)
+    text = models.CharField(max_length=280)
+    created_at = models.DateTimeField(auto_now_add=True)
