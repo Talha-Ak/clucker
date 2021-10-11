@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
-from .models import User, Post
+from microblogs.models import User, Post
 
 class PostModelTestCase(TestCase):
     def setUp(self):
