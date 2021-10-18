@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, LogInForm
 
@@ -22,6 +22,10 @@ def log_in(request):
         messages.add_message(request, messages.ERROR, "The username/password provided were invalid.")
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
+
+def log_out(request):
+    logout(request)
+    return redirect(home)
 
 def sign_up(request):
     if request.method == 'POST':
