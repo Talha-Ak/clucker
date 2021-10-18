@@ -4,6 +4,9 @@
 </head>
 <body>
   <h1>Log In</h1>
-  <p>This is where the log in form will go.</p>
+  <form action="{% url 'log_in' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Log in">
 </body>
 </html>
