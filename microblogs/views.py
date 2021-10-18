@@ -2,12 +2,16 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, LogInForm
+from .models import User        # Can this dependency be avoided?
 
 def home(request):
     return render(request, 'home.html')
 
 def feed(request):
     return render(request, 'feed.html')
+
+def user_list(request):
+    return render(request, 'user_list.html', { 'users': User.objects.all() })
 
 def log_in(request):
     if request.method == 'POST':
