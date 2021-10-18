@@ -2,8 +2,9 @@ from django.test import TestCase
 from django.urls import reverse
 from microblogs.forms import LogInForm
 from microblogs.models import User
+from .helpers import LogInTester
 
-class LogInViewTestCase(TestCase):
+class LogInViewTestCase(TestCase, LogInTester):
 
     def setUp(self):
         self.url = reverse('log_in')
