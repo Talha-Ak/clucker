@@ -4,6 +4,13 @@
 </head>
 <body>
   <h1>Feed</h1>
+
+  <form action="{% url 'new_post' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Post">
+  </form>
+
   <p>This is where the feed would go.</p>
 </body>
 </html>

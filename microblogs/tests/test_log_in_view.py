@@ -68,7 +68,3 @@ class LogInViewTestCase(TestCase, LogInTester):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 1)
         self.assertEqual(messages_list[0].level, messages.ERROR)
-
-
-    def _is_logged_in(self):
-        return '_auth_user_id' in self.client.session.keys()

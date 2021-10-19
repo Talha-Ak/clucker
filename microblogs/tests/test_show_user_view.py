@@ -16,7 +16,7 @@ class ShowUserViewTestCase(TestCase):
         self.url = reverse('show_user', args=[self.user.id])
 
     def test_show_user_url(self):
-        self.assertEqual(self.url, f'/user/{self.user.id}')
+        self.assertEqual(self.url, f'/user/{self.user.id}/')
 
     def test_get_user(self):
         response = self.client.get(self.url)

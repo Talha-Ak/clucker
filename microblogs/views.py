@@ -1,14 +1,23 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
-from .forms import SignUpForm, LogInForm
+from .forms import SignUpForm, LogInForm, PostForm
 from .models import User        # Can this dependency be avoided?
 
 def home(request):
     return render(request, 'home.html')
 
 def feed(request):
-    return render(request, 'feed.html')
+    form = PostForm()
+    return render(request, 'feed.html', {'form': form})
+
+def new_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid() and request.user.is_authenticated:
+            form.save(request.user)
+        return redirect('feed')
+
 
 def user_list(request):
     return render(request, 'user_list.html', { 'users': User.objects.filter(is_superuser=False) })

@@ -46,3 +46,9 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['text']
         widgets = { 'text': forms.Textarea() }
+
+    def save(self, user):
+        post = super().save(commit=False)
+        post.author = user
+        post.save()
+        return post
