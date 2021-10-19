@@ -7,7 +7,7 @@ class UserListViewTestCase(TestCase):
     def setUp(self):
         self.url = reverse('user_list')
 
-    def test_log_out_url(self):
+    def test_user_list_url(self):
         self.assertEqual(self.url, '/users/')
 
     def test_get_user_list(self):
@@ -15,4 +15,4 @@ class UserListViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'user_list.html')
         user_list = response.context['users']
-        self.assertEqual(list(user_list), list(User.objects.all()))
+        self.assertEqual(list(user_list), list(User.objects.filter(is_superuser=False)))

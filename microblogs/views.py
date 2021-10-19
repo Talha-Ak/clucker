@@ -11,7 +11,10 @@ def feed(request):
     return render(request, 'feed.html')
 
 def user_list(request):
-    return render(request, 'user_list.html', { 'users': User.objects.all() })
+    return render(request, 'user_list.html', { 'users': User.objects.filter(is_superuser=False) })
+
+def show_user(request, user_id):
+    return render(request, 'show_user.html', { 'user': User.objects.get(id=user_id) })
 
 def log_in(request):
     if request.method == 'POST':
