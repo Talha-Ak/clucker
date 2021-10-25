@@ -6,11 +6,12 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12 col-md-6 offset-md-3">
-      <h1>Clucker Users</h1>
+      <h1>Users</h1>
       <table class="table table-hover">
         <tbody>
           {% for user in users %}
               <tr>
+                <td><img src="{{ user.gravatar }}" width="48px" class="rounded-circle"></td>
                 <td>{{ user.first_name }} {{ user.last_name }}</td>
                 <td>{{ user.username }}</td>
                 <td><a href="{% url 'show_user' user_id=user.id %}">View user</a></td>

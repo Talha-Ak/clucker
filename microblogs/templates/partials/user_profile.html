@@ -1,0 +1,8 @@
+<div class="clearfix mb-2">
+<img src="{{ user.gravatar }}"
+  class="profile-image rounded-circle"
+  alt="A profile picture of {{ user.first_name }}">
+<h3 class="profile-title profile-text">{{ user.first_name }} {{ user.last_name }}</h3>
+<p class="profile-username profile-text">{{ user.username }}</p>
+</div>
+<p class="d-block profile-bio">{{ user.bio }}</p>
