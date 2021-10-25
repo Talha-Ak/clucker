@@ -14,7 +14,11 @@ def feed(request):
 def new_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
-        if form.is_valid() and request.user.is_authenticated:
+        if not request.user.is_authenticated:
+            messages.add_message(request, messages.ERROR, "You need to be logged in to make a post.")
+        elif not form.is_valid():
+            messages.add_message(request, messages.ERROR, f"Your post is too long ({form.cleaned_data.get('text').length}). Maximum post length is 280 chars.")
+        else:
             form.save(request.user)
         return redirect('feed')
 
