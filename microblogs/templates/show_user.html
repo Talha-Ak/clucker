@@ -1,13 +1,18 @@
-<html>
-<head>
-  <title>Clucker</title>
-</head>
-<body>
-  <h1>{{ user.first_name }}'s Page</h1>
-    <p>
-      <b>{{ user.first_name }}</b> {{ user.last_name}} ({{ user.username }})
-      <br>
-      {{ user.bio }}
-    </p>
-</body>
-</html>
+{% extends 'base_content.html' %}
+
+{% block title %}| {{ user.first_name }}'s Page{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 offset-md-3">
+      <h1>{{ user.first_name }}'s Page</h1>
+        <p>
+          <b>{{ user.first_name }}</b> {{ user.last_name}} ({{ user.username }})
+          <br>
+          {{ user.bio }}
+        </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

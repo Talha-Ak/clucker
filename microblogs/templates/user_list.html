@@ -1,15 +1,24 @@
-<html>
-<head>
-  <title>Clucker</title>
-</head>
-<body>
-  <h1>Clucker Users</h1>
-  {% for user in users %}
-    <p>
-      <b>{{ user.first_name }}</b> {{ user.last_name }} <i>({{ user.username }})</i>
-      <br>
-      {{ user.bio }}
-    </p>
-  {% endfor %}
-</body>
-</html>
+{% extends 'base_content.html' %}
+
+{% block title %}| Users{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 offset-md-3">
+      <h1>Clucker Users</h1>
+      <table class="table table-hover">
+        <tbody>
+          {% for user in users %}
+              <tr>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.username }}</td>
+                <td><a href="{% url 'show_user' user_id=user.id %}">View user</a></td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

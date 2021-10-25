@@ -1,16 +1,17 @@
 {% extends 'base_content.html' %}
+
+{% block title %}| Feed{% endblock %}
+
 {% block content %}
 <div class="container">
   <div class="row">
     <div class="col-sm-12 col-md-6 offset-md-3">
       <h1>Feed</h1>
-
       <form action="{% url 'new_post' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Post">
       </form>
-
       <p>This is where the feed would go.</p>
     </div>
   </div>
