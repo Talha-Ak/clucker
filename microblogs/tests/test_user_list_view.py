@@ -3,7 +3,7 @@ from django.urls import reverse
 from microblogs.models import User
 
 class UserListViewTestCase(TestCase):
-
+    """Test suite for user_list view"""
     def setUp(self):
         self.url = reverse('user_list')
 

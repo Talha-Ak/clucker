@@ -3,7 +3,7 @@ from django.urls import reverse
 from microblogs.models import User
 
 class ShowUserViewTestCase(TestCase):
-
+    """Test suite for show_user view"""
     def setUp(self):
         self.user = User.objects.create_user('@johndoe',
             first_name = 'John',

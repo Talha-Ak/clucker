@@ -4,6 +4,7 @@ from microblogs.forms import PostForm
 from microblogs.models import User, Post
 
 class PostFormTestCase(TestCase):
+    """Test suite for PostForm"""
     def setUp(self):
         self.form_input = {
             'text': 'This is an example "cluck" to be tested.'

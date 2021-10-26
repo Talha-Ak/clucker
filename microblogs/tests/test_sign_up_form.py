@@ -5,7 +5,7 @@ from microblogs.forms import SignUpForm
 from microblogs.models import User
 
 class SignUpFormTestCase(TestCase):
-
+    """Test suite for SignUpForm"""
     def setUp(self):
         self.form_input = {
             'first_name': 'Jane',
@@ -75,5 +75,6 @@ class SignUpFormTestCase(TestCase):
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')
         self.assertEqual(user.email, 'janedoe@example.org')
+        # Ensure password is correctly hashed.
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)

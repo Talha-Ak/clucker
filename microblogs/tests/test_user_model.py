@@ -3,6 +3,7 @@ from django.test import TestCase
 from microblogs.models import User
 
 class UserModelTestCase(TestCase):
+    """Test suite for the User model."""
     def setUp(self):
         self.user = User.objects.create_user(
             username='@johndoe',

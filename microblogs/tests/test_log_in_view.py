@@ -6,7 +6,7 @@ from microblogs.models import User
 from .helpers import LogInTester
 
 class LogInViewTestCase(TestCase, LogInTester):
-
+"""Test suite for log_in view"""
     def setUp(self):
         self.url = reverse('log_in')
         self.user = User.objects.create_user('@johndoe',
@@ -25,6 +25,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'log_in.html')
+        # Also check if form is unbound, no messages.
         form = response.context['form']
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
@@ -55,6 +56,8 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertEqual(len(messages_list), 0)
 
     def test_valid_log_in_by_inactive_user(self):
+        # User should not be able to login if marked inactive,
+        # even with valid credentials.
         self.user.is_active = False
         self.user.save()
         form_input = { 'username': '@johndoe', 'password': 'Password123' }

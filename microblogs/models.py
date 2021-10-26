@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from libgravatar import Gravatar
 
 class User(AbstractUser):
+    """The application user model, also used for user authenticaion."""
     username = models.CharField(
         unique=True,
         blank=False,
@@ -24,7 +25,9 @@ class User(AbstractUser):
         gravatar_url = gravatar_object.get_image(size=size, default='mp')
         return gravatar_url
 
+
 class Post(models.Model):
+    """The application post model."""
     author = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=False)
     text = models.CharField(max_length=280)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -3,6 +3,7 @@ from django.test import TestCase
 from microblogs.forms import LogInForm
 
 class LogInFormTestCase(TestCase):
+    """Test suite for LogInForm"""
     def setUp(self):
         self.form_input = {'username': '@janedoe', 'password': 'Password123'}
 

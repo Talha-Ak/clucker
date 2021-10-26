@@ -6,7 +6,7 @@ from microblogs.models import User
 from .helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
-
+    """Test suite for sign_up view"""
     def setUp(self):
         self.url = reverse('sign_up')
         self.form_input = {
@@ -55,6 +55,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')
         self.assertEqual(user.email, 'janedoe@example.org')
+        # Ensure password is correctly hashed.
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
         self.assertTrue(self._is_logged_in())

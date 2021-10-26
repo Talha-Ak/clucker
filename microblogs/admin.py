@@ -11,6 +11,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
+    """Configuration of the admin interface for posts."""
     readonly_fields = ['created_at']
     list_display = [
         'author', 'text', 'created_at'

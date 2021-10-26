@@ -4,7 +4,7 @@ from microblogs.forms import PostForm
 from microblogs.models import User, Post
 
 class NewPostViewTestCase(TestCase):
-
+    """Test suite for new_post view"""
     def setUp(self):
         self.url = reverse('new_post')
         self.user = User.objects.create_user('@johndoe',

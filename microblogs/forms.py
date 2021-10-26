@@ -3,10 +3,12 @@ from django.core.validators import RegexValidator
 from .models import User, Post
 
 class LogInForm(forms.Form):
+    """Form for logging a user into the application."""
     username = forms.CharField(label='Username')
     password = forms.CharField(label='Password', widget = forms.PasswordInput)
 
 class SignUpForm(forms.ModelForm):
+    """Form for registering a user to the application."""
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'bio']
@@ -23,6 +25,7 @@ class SignUpForm(forms.ModelForm):
     password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
 
     def clean(self):
+        """Validate form and check if provided passwords match."""
         super().clean()
         new_password = self.cleaned_data.get('new_password')
         password_confirmation = self.cleaned_data.get('password_confirmation')
@@ -30,6 +33,7 @@ class SignUpForm(forms.ModelForm):
             self.add_error('password_confirmation', 'Confirmation does not match password.')
 
     def save(self):
+        """Create and save a new user to the database."""
         super().save(commit=False)
         user = User.objects.create_user(
             self.cleaned_data.get('username'),
@@ -42,6 +46,7 @@ class SignUpForm(forms.ModelForm):
         return user;
 
 class PostForm(forms.ModelForm):
+    """Form for creating a new post."""
     class Meta:
         model = Post
         fields = ['text']
