@@ -20,10 +20,11 @@ def new_post(request):
         # Only save message if user logged in and within post text limit.
         if not request.user.is_authenticated:
             messages.add_message(request, messages.ERROR, "You need to be logged in to make a post.")
-        elif form.is_valid():
+        elif not form.is_valid():
+            messages.add_message(request, messages.ERROR, "Your post is too long. Maximum length is 280 characters.")
+        else:
             form.save(request.user)
-            form = PostForm()
-        return render(request, 'feed.html', {'form': form})
+        return redirect('feed')
 
 def user_list(request):
     """View for GETting the user list page."""

@@ -6,7 +6,7 @@ from microblogs.models import User
 from .helpers import LogInTester
 
 class LogInViewTestCase(TestCase, LogInTester):
-"""Test suite for log_in view"""
+    """Test suite for log_in view"""
     def setUp(self):
         self.url = reverse('log_in')
         self.user = User.objects.create_user('@johndoe',
