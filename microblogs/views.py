@@ -4,14 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, LogInForm, PostForm
 from .models import User
-
-def login_prohibited(view_function):
-    def modified_view_function(request):
-        if request.user.is_authenticated:
-            return redirect('feed')
-        else:
-            return view_function(request)
-    return modified_view_function
+from .helpers import login_prohibited
 
 @login_prohibited
 def home(request):
