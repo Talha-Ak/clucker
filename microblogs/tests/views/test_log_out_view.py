@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from microblogs.models import User
-from .helpers import LogInTester
+from microblogs.tests.helpers import LogInTester
 
 class LogOutViewTestCase(TestCase, LogInTester):
     """Test suite for log_out view"""

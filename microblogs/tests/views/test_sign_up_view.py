@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from microblogs.forms import SignUpForm
 from microblogs.models import User
-from .helpers import LogInTester
+from microblogs.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
     """Test suite for sign_up view"""
