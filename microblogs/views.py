@@ -5,6 +5,14 @@ from django.shortcuts import redirect, render
 from .forms import SignUpForm, LogInForm, PostForm
 from .models import User
 
+def login_prohibited(view_function):
+    def modified_view_function(request):
+        if request.user.is_authenticated:
+            return redirect('feed')
+        else:
+            return view_function(request)
+    return modified_view_function
+
 def home(request):
     """View for GETting the homepage"""
     return render(request, 'home.html')
@@ -41,6 +49,7 @@ def show_user(request, user_id):
     except User.DoesNotExist:
         return redirect('user_list')
 
+@login_prohibited
 def log_in(request):
     """View for GETting the login page, and for POSTing the completed login form"""
     if request.method == 'POST':
