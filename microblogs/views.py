@@ -32,6 +32,7 @@ def user_list(request):
     """View for GETting the user list page."""
     return render(request, 'user_list.html', { 'users': User.objects.filter(is_superuser=False) })
 
+@login_required
 def show_user(request, user_id):
     """View for GETting a specific user's page."""
     try:
