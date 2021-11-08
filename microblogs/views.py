@@ -9,6 +9,7 @@ def home(request):
     """View for GETting the homepage"""
     return render(request, 'home.html')
 
+@login_required
 def feed(request):
     """View for GETting the user's main feed."""
     form = PostForm()

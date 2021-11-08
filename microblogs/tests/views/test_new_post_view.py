@@ -35,9 +35,6 @@ class NewPostViewTestCase(TestCase):
         response = self.client.post(self.url, self.post, follow=True)
         after_count = Post.objects.count()
         self.assertEqual(after_count, before_count)
-        response_url = reverse('feed')
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'feed.html')
 
     def test_invalid_post_logged_in(self):
         self.post['text'] = 'x' * 281
