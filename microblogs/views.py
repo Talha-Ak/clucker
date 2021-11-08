@@ -74,6 +74,7 @@ def log_out(request):
     logout(request)
     return redirect(home)
 
+@login_prohibited
 def sign_up(request):
     """View for GETting the sign up page, and for POSTing the completed form>"""
     if request.method == 'POST':
