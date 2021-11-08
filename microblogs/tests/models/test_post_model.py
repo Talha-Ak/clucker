@@ -4,15 +4,11 @@ from microblogs.models import User, Post
 
 class PostModelTestCase(TestCase):
     """Test suite for the Post model"""
+
+    fixtures = ['microblogs/tests/fixtures/default_user.json']
+
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='@johndoe',
-            first_name='John',
-            last_name='Doe',
-            email='johndoe@example.org',
-            password='Password123',
-            bio='This is a test bio.'
-        )
+        self.user = User.objects.get(username='@johndoe')
         self.post = Post.objects.create(
             author=self.user,
             text='This is just some example text to test things out.',

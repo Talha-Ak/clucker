@@ -5,16 +5,12 @@ from microblogs.models import User, Post
 
 class NewPostViewTestCase(TestCase):
     """Test suite for new_post view"""
+
+    fixtures = ['microblogs/tests/fixtures/default_user.json']
+
     def setUp(self):
         self.url = reverse('new_post')
-        self.user = User.objects.create_user('@johndoe',
-            first_name = 'John',
-            last_name = 'Doe',
-            email='johndoe@example.org',
-            bio='I am John Doe.',
-            password='Password123',
-            is_active=True,
-        )
+        self.user = User.objects.get(username='@johndoe')
         self.post = {
             'text': 'This is just some example text to test things out.',
         }
