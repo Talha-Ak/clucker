@@ -13,6 +13,7 @@ def login_prohibited(view_function):
             return view_function(request)
     return modified_view_function
 
+@login_prohibited
 def home(request):
     """View for GETting the homepage"""
     return render(request, 'home.html')
