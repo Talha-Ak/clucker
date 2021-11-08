@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, LogInForm, PostForm
-from .models import User        # Can this dependency be avoided?
+from .models import User
 
 def home(request):
     """View for GETting the homepage"""
@@ -26,13 +27,17 @@ def new_post(request):
             form.save(request.user)
         return redirect('feed')
 
+@login_required
 def user_list(request):
     """View for GETting the user list page."""
     return render(request, 'user_list.html', { 'users': User.objects.filter(is_superuser=False) })
 
 def show_user(request, user_id):
     """View for GETting a specific user's page."""
-    return render(request, 'show_user.html', { 'user': User.objects.get(id=user_id) })
+    try:
+        return render(request, 'show_user.html', { 'user': User.objects.get(id=user_id) })
+    except User.DoesNotExist:
+        return redirect('user_list')
 
 def log_in(request):
     """View for GETting the login page, and for POSTing the completed login form"""
@@ -46,10 +51,12 @@ def log_in(request):
             # Check if user exists with username-password combination.
             if user is not None:
                 login(request, user)
-                return redirect('feed')
+                redirect_url = request.POST.get('next') or 'feed';
+                return redirect(redirect_url)
         messages.add_message(request, messages.ERROR, "The username/password provided were invalid.")
     form = LogInForm()
-    return render(request, 'log_in.html', {'form': form})
+    next = request.GET.get('next') or '';
+    return render(request, 'log_in.html', {'form': form, 'next': next})
 
 def log_out(request):
     """View for GETting the log out page, which redirects to home."""

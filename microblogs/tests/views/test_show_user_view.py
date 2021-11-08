@@ -9,7 +9,7 @@ class ShowUserViewTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='@johndoe')
-        self.url = reverse('show_user', args=[self.user.id])
+        self.url = reverse('show_user', kwargs={'user_id': self.user.id})
 
     def test_show_user_url(self):
         self.assertEqual(self.url, f'/user/{self.user.id}/')
@@ -20,3 +20,11 @@ class ShowUserViewTestCase(TestCase):
         self.assertTemplateUsed(response, 'show_user.html')
         user = response.context['user']
         self.assertEqual(user, User.objects.get(id=self.user.id))
+
+    def test_get_user_with_invalid_id(self):
+        self.client.login(username=self.user.username, password='Password123')
+        url = reverse('show_user', args=[self.user.id + 1])
+        response = self.client.get(url, follow=True)
+        response_url = reverse('user_list')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'user_list.html')
