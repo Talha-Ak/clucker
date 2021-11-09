@@ -4,9 +4,12 @@
 
 {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="col-sm-12 col-md-6 offset-md-3">
+  <div class="row content">
+    <div class="col-xs-12 col-lg-6 col-xl-4">
       {% include 'partials/user_profile.html' %}
+    </div>
+    <div class="col-xs-12 col-lg-6 col-xl-8">
+      {% include 'partials/posts_as_table.html' with posts=posts %}
     </div>
   </div>
 </div>

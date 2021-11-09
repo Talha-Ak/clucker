@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, LogInForm, PostForm
-from .models import User
+from .models import User, Post
 from .helpers import login_prohibited
 
 @login_prohibited
@@ -39,7 +39,9 @@ def user_list(request):
 def show_user(request, user_id):
     """View for GETting a specific user's page."""
     try:
-        return render(request, 'show_user.html', { 'user': User.objects.get(id=user_id) })
+        user = User.objects.get(id=user_id)
+        posts = Post.objects.filter(author=user)
+        return render(request, 'show_user.html', { 'user': user, 'posts': posts })
     except User.DoesNotExist:
         return redirect('user_list')
 
