@@ -15,7 +15,9 @@ def home(request):
 def feed(request):
     """View for GETting the user's main feed."""
     form = PostForm()
-    return render(request, 'feed.html', {'form': form})
+    current_user = request.user
+    posts = Post.objects.filter(author=current_user)
+    return render(request, 'feed.html', {'form': form, 'posts': posts})
 
 def new_post(request):
     """View for POSTing a Post from a user."""
