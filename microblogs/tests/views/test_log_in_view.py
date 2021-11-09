@@ -52,6 +52,13 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'feed.html')
 
+    def test_get_log_in_unsuccessful_keeps_redirect_info(self):
+        destination_url = reverse('user_list')
+        form_input = { 'username': '@johndoe', 'password': 'WrongPassword123', 'next': destination_url }
+        response = self.client.post(self.url, form_input)
+        next = response.context['next']
+        self.assertEqual(next, destination_url)
+
     def test_unsuccessful_log_in(self):
         form_input = { 'username': '@johndoe', 'password': 'WrongPassword123' }
         response = self.client.post(self.url, form_input)
