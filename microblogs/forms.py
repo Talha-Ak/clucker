@@ -46,11 +46,32 @@ class SignUpForm(forms.ModelForm):
         return user;
 
 class ProfileUpdateForm(forms.ModelForm):
-    """Form for updating a user."""
+    """Form for updating a user's information."""
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'bio']
         widgets = { 'bio': forms.Textarea() }
+
+class PasswordUpdateForm(forms.Form):
+    """Form for updating a user's password."""
+    old_password = forms.CharField(label='Current password', widget=forms.PasswordInput())
+    new_password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(),
+        validators=[RegexValidator(
+            regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
+            message='Password must contain an uppercase character, lowercase character and a number.',
+        )],
+    )
+    password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
+
+    def clean(self):
+        """Check if provided passwords match."""
+        super().clean()
+        new_password = self.cleaned_data.get('new_password')
+        password_confirmation = self.cleaned_data.get('password_confirmation')
+        if new_password != password_confirmation:
+            self.add_error('password_confirmation', 'Confirmation does not match password.')
 
 class PostForm(forms.ModelForm):
     """Form for creating a new post."""

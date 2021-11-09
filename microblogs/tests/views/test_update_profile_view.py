@@ -31,7 +31,7 @@ class UpdateProfileViewTestCase(TestCase):
         self.assertTrue(isinstance(form, ProfileUpdateForm))
         self.assertFalse(form.is_bound)
 
-    def test_get_sign_up_redirects_when_not_logged_in(self):
+    def test_get_update_profile_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('log_in', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)

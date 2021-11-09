@@ -34,7 +34,7 @@ class SignUpFormTestCase(TestCase):
         new_password_widget = form.fields['new_password'].widget
         self.assertTrue(isinstance(new_password_widget, forms.PasswordInput))
         self.assertIn('password_confirmation', form.fields)
-        password_confirmation_widget = form.fields['new_password'].widget
+        password_confirmation_widget = form.fields['password_confirmation'].widget
         self.assertTrue(isinstance(password_confirmation_widget, forms.PasswordInput))
 
     def test_form_uses_model_validation(self):
