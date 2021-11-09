@@ -1,8 +1,8 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from .forms import SignUpForm, LogInForm, PostForm, ProfileUpdateForm
+from .forms import SignUpForm, LogInForm, PostForm, ProfileUpdateForm, PasswordUpdateForm
 from .models import User, Post
 from .helpers import login_prohibited
 
@@ -103,3 +103,20 @@ def update_profile(request):
     else:
         form = ProfileUpdateForm(instance=request.user)
     return render(request, 'update_profile.html', {'form': form})
+
+@login_required
+def update_password(request):
+    """View for getting update password page, and posting update form."""
+    if request.method == 'POST':
+        form = PasswordUpdateForm(request.user, request.POST)
+        # Check the validation of the form, and update user if OK.
+        if form.is_valid():
+            request.user.set_password(form.cleaned_data.get('new_password'))
+            request.user.save()
+            update_session_auth_hash(request, request.user)
+            messages.add_message(request, messages.SUCCESS, "Your password was updated.")
+            return redirect('feed')
+    # If a GET request, create new form.
+    else:
+        form = PasswordUpdateForm(request.user)
+    return render(request, 'update_password.html', {'form': form})

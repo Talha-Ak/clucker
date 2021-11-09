@@ -15,7 +15,7 @@
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-account-dropdown">
         <li><h6 class="dropdown-header">Welcome, <b>{{ user.first_name }}</b><h6></li>
         <li><a class="dropdown-item" href="{% url 'update_profile' %}">Change profile</a></li>
-        <li><a class="dropdown-item" href="#">Change password</a></li>
+        <li><a class="dropdown-item" href="{% url 'update_password' %}">Change password</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="{% url 'log_out' %}">Log out</a></li>
       </ul>
