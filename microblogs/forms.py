@@ -65,9 +65,16 @@ class PasswordUpdateForm(forms.Form):
     )
     password_confirmation = forms.CharField(label='Password confirmation', widget=forms.PasswordInput())
 
+    def __init__(self, user, data=None):
+        self.user = user
+        super(PasswordUpdateForm, self).__init__(data=data)
+
     def clean(self):
         """Check if provided passwords match."""
         super().clean()
+        old_password = self.cleaned_data.get('old_password')
+        if not self.user.check_password(old_password):
+            self.add_error('old_password', 'The existing password was incorrect.')
         new_password = self.cleaned_data.get('new_password')
         password_confirmation = self.cleaned_data.get('password_confirmation')
         if new_password != password_confirmation:
