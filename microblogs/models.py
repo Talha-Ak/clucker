@@ -29,9 +29,24 @@ class User(AbstractUser):
         return gravatar_url
 
     def mini_gravatar(self):
-            """Return a URL to the a small version of the user's gravatar."""
-            return self.gravatar(size=60)
+        """Return a URL to the a small version of the user's gravatar."""
+        return self.gravatar(size=60)
 
+    def toggle_follow(self, followee):
+        """Toggles whether self follows the given followee."""
+        pass
+
+    def is_following(self, user):
+        """ Returns whether self follows the given user."""
+        return False
+
+    def follower_count(self):
+        """Returns the number of followers of self."""
+        return 0
+
+    def followee_count(self):
+        """Returns the number of followees of self."""
+        return 0
 
 class Post(models.Model):
     """The application post model."""
