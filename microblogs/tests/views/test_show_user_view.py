@@ -13,10 +13,11 @@ class ShowUserViewTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='@johndoe')
-        self.url = reverse('show_user', kwargs={'user_id': self.user.id})
+        self.target_user = User.objects.get(username='@janedoe')
+        self.url = reverse('show_user', kwargs={'user_id': self.target_user.id})
 
     def test_show_user_url(self):
-        self.assertEqual(self.url, f'/user/{self.user.id}/')
+        self.assertEqual(self.url, f'/user/{self.target_user.id}/')
 
     def test_get_user(self):
         self.client.login(username=self.user.username, password='Password123')
@@ -24,7 +25,28 @@ class ShowUserViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'show_user.html')
         user = response.context['user']
-        self.assertEqual(user, User.objects.get(id=self.user.id))
+        self.assertEqual(user, User.objects.get(id=self.target_user.id))
+
+    def test_get_user_with_valid_id(self):
+        self.client.login(username=self.user.username, password='Password123')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'show_user.html')
+        self.assertContains(response, 'Jane Doe')
+        self.assertContains(response, '@janedoe')
+        followable = response.context['followable']
+        self.assertTrue(followable)
+
+    def test_get_user_with_own_id(self):
+        self.client.login(username=self.user.username, password='Password123')
+        url = reverse('show_user', kwargs={'user_id': self.user.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'show_user.html')
+        self.assertContains(response, 'John Doe')
+        self.assertContains(response, '@johndoe')
+        followable = response.context['followable']
+        self.assertFalse(followable)
 
     def test_get_user_with_invalid_id(self):
         self.client.login(username=self.user.username, password='Password123')
