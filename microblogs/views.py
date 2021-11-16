@@ -61,6 +61,9 @@ def feed(request):
     posts = Post.objects.filter(author=current_user)
     return render(request, 'feed.html', {'form': form, 'posts': posts})
 
+def follow_toggle(request):
+    return redirect('feed')
+
 def new_post(request):
     """View for posting a Post from a user."""
     if request.method == 'POST':
