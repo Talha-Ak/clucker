@@ -1,7 +1,10 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
+from django.views import View
 from .forms import SignUpForm, LogInForm, PostForm, ProfileUpdateForm, PasswordUpdateForm
 from .models import User, Post
 from .helpers import login_prohibited
@@ -11,27 +14,35 @@ def home(request):
     """View for getting the homepage"""
     return render(request, 'home.html')
 
-@login_prohibited
-def log_in(request):
-    """View for getting the login page, and for posting the completed login form"""
-    if request.method == 'POST':
-        form = LogInForm(request.POST)
-        next = request.POST.get('next') or '';
-        # Check the validation of username and password
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            # Check if user exists with username-password combination.
-            if user is not None:
-                login(request, user)
-                redirect_url = next or 'feed'
-                return redirect(redirect_url)
-        messages.add_message(request, messages.ERROR, "The username/password provided were invalid.")
-    else:
+class LogInView(View):
+    """View that handles log in."""
+
+    http_method_names = ['get', 'post']
+
+    @method_decorator(login_prohibited)
+    def dispatch(self, request):
+        return super().dispatch(request)
+
+    def get(self, request):
+        """Display log in template."""
         next = request.GET.get('next') or '';
-    form = LogInForm()
-    return render(request, 'log_in.html', {'form': form, 'next': next})
+        return self.render(next)
+
+    def post(self, request):
+        """Handle log in attempt."""
+        form = LogInForm(request.POST)
+        next = request.POST.get('next') or settings.REDIRECT_URL_WHEN_LOGGED_IN
+        user = form.get_user()
+        if user is not None:
+            login(request, user)
+            return redirect(next)
+        messages.add_message(request, messages.ERROR, "The username/password provided were invalid.")
+        return self.render(next)
+
+    def render(self, next):
+        """Render log in template with log in form."""
+        form = LogInForm()
+        return render(self.request, 'log_in.html', {'form': form, 'next': next})
 
 def log_out(request):
     """View for getting the log out page, which redirects to home."""

@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.core.validators import RegexValidator
 from .models import User, Post
 
@@ -6,6 +7,13 @@ class LogInForm(forms.Form):
     """Form for logging a user into the application."""
     username = forms.CharField(label='Username')
     password = forms.CharField(label='Password', widget = forms.PasswordInput)
+
+    def get_user(self):
+        """Returns authenticated user if possible."""
+        if self.is_valid():
+            username = self.cleaned_data.get('username')
+            password = self.cleaned_data.get('password')
+            return authenticate(username=username, password=password)
 
 class SignUpForm(forms.ModelForm):
     """Form for registering a user to the application."""
