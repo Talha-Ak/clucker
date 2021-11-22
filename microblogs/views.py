@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.generic import ListView
 from .forms import SignUpForm, LogInForm, PostForm, ProfileUpdateForm, PasswordUpdateForm
 from .models import User, Post
 from .helpers import login_prohibited
@@ -97,10 +98,15 @@ def new_post(request):
             form.save(request.user)
     return redirect('feed')
 
-@login_required
-def user_list(request):
-    """View for getting the user list page."""
-    return render(request, 'user_list.html', { 'users': User.objects.filter(is_superuser=False) })
+class UserListView(ListView):
+    """View that shows a list of all users."""
+    model = User
+    template_name = 'user_list.html'
+    context_object_name = 'users'
+
+    @method_decorator(login_required)
+    def dispatch(self, request):
+        return super().dispatch(request)
 
 @login_required
 def show_user(request, user_id):
