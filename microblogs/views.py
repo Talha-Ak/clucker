@@ -2,10 +2,12 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 from .forms import SignUpForm, LogInForm, PostForm, ProfileUpdateForm, PasswordUpdateForm
 from .models import User, Post
 from .helpers import login_prohibited
@@ -108,22 +110,31 @@ class UserListView(ListView):
     def dispatch(self, request):
         return super().dispatch(request)
 
-@login_required
-def show_user(request, user_id):
-    """View for getting a specific user's page."""
-    try:
-        user = User.objects.get(id=user_id)
-        posts = Post.objects.filter(author=user)
-        following = request.user.is_following(user)
-        followable = (request.user != user)
-        return render(request, 'show_user.html',
-            { 'user': user,
-            'posts': posts,
-            'following': following,
-            'followable': followable }
-        )
-    except User.DoesNotExist:
-        return redirect('user_list')
+class ShowUserView(DetailView):
+    """View that shows individual user details."""
+    model = User
+    template_name = 'show_user.html'
+    context_object_name = 'user'
+    pk_url_kwarg = 'user_id'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        """Generate content to be displayed in the template."""
+        context = super().get_context_data(*args, **kwargs)
+        user = self.get_object()
+        context['posts'] = Post.objects.filter(author=user)
+        context['following'] = self.request.user.is_following(user)
+        context['followable'] = (self.request.user != user)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except Http404:
+            return redirect('user_list')
 
 @login_required
 def update_profile(request):
